@@ -2,15 +2,14 @@ package com.tugasakhir.dao.login;
 
 import com.tugasakhir.configuration.DBHandler;
 import com.tugasakhir.configuration.Response;
-import com.tugasakhir.model.login.LoginRequest;
-import com.tugasakhir.util.mapper.Mapper;
+import com.tugasakhir.model.LoginRequest;
 import com.tugasakhir.util.jwt.JwtTokenResponse;
 import com.tugasakhir.util.jwt.JwtTokenUtil;
 import com.tugasakhir.util.jwt.SessionUtil;
+import com.tugasakhir.util.mapper.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +23,9 @@ import static com.tugasakhir.util.Helpers.getString;
 @Service
 @Transactional
 public class LoginDaoImpl extends DBHandler implements LoginDao {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
-    LoginDaoImpl(DataSource dataSource, BCryptPasswordEncoder bCryptPasswordEncoder, JwtTokenUtil jwtTokenUtil) {
+    LoginDaoImpl(DataSource dataSource,  JwtTokenUtil jwtTokenUtil) {
         this.setDataSource(dataSource);
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
@@ -51,12 +48,12 @@ public class LoginDaoImpl extends DBHandler implements LoginDao {
             Object[] objToken = {linkedHashMap.get("user_name"), request.getRemoteAddr(), token};
             String resultToken = ExecuteUpdateCallPostgres("user_func_insert_token", objToken);
             if(!resultToken.equals("Success")){
-                return Response.response(resultToken, HttpStatus.INTERNAL_SERVER_ERROR);
+                return Response.response(resultToken, HttpStatus.BAD_REQUEST);
             }
 
             return Response.response(linkedHashMap, "Login Berhasil", HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -69,11 +66,11 @@ public class LoginDaoImpl extends DBHandler implements LoginDao {
             Object[] obj = {response.getUser_name(), token};
             String result = ExecuteUpdateCallPostgres("user_func_logout_token", obj);
             if(!result.equals("Success")){
-                return Response.response(result, HttpStatus.INTERNAL_SERVER_ERROR);
+                return Response.response(result, HttpStatus.BAD_REQUEST);
             }
             return Response.response("User " + response.getUser_name() + " berhasil logout", HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

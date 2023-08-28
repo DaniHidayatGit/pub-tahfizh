@@ -2,9 +2,10 @@ package com.tugasakhir.dao.user;
 
 import com.tugasakhir.configuration.DBHandler;
 import com.tugasakhir.configuration.Response;
-import com.tugasakhir.model.user.UserRequest;
+import com.tugasakhir.model.UserRequest;
 import com.tugasakhir.util.Helpers;
 import com.tugasakhir.util.jwt.SessionUtil;
+import com.tugasakhir.util.mapper.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -39,14 +42,16 @@ public class UserDaoImpl extends DBHandler implements UserDao {
             Object[] obj = {
                     userRequest.getUser_name(),
                     userRequest.getUser_password(),
-                    userRequest.getUser_active(),
                     userRequest.getRole_id(),
                     userRequest.getMail(),
+                    userRequest.getUser_active(),
+                    "DEV TAHFIZH",
                     userRequest.getFull_name(),
                     userRequest.getPhone(),
-                    SessionUtil.getUserData(request).getUser_name()
+                    "alamat",
+                    "foto"
             };
-            String result = ExecuteUpdateCallPostgres("user_func_insert", obj);
+            String result = ExecuteUpdateCallPostgres("user_func_create", obj);
             if(!result.equals("USER BERHASIL DIBUAT")){
                 log.error(log_template_error, "insertUser", result, new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
                 return Response.response(result, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,6 +60,17 @@ public class UserDaoImpl extends DBHandler implements UserDao {
             return Response.response(result, HttpStatus.OK);
         } catch (RuntimeException e){
             log.error(log_template_error, "insertUser", e.getMessage(), new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
+            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getUser(String user_id, HttpServletRequest request) {
+        try {
+            Object[] obj = {user_id};
+            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("user_func_get", obj, new Mapper());
+            return Response.response(linkedHashMaps, HttpStatus.OK);
+        } catch (RuntimeException e){
             return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -2,7 +2,7 @@ package com.tugasakhir.controller;
 
 import com.tugasakhir.configuration.Response;
 import com.tugasakhir.dao.login.LoginDao;
-import com.tugasakhir.model.login.LoginRequest;
+import com.tugasakhir.model.LoginRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(loginRequest.getUser_name(), loginRequest.getUser_password()));
             return loginDao.doLogin(loginRequest, request);
         } catch (RuntimeException e){
-            return Response.response("USER TIDAK DITEMUKAN", HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response("USER TIDAK DITEMUKAN", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -43,4 +43,5 @@ public class LoginController {
     ){
         return loginDao.doLogout(request);
     }
+
 }

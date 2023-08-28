@@ -1,4 +1,4 @@
-package com.tugasakhir.model.login;
+package com.tugasakhir.model;
 
 import lombok.Data;
 

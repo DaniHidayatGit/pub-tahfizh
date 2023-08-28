@@ -6,4 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface MasterMenuDao {
     ResponseEntity<?> getMenuJson(HttpServletRequest request);
+
+    ResponseEntity<?> getAllMenuJson();
 }

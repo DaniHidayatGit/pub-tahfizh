@@ -1,4 +1,4 @@
-package com.tugasakhir.model.menu;
+package com.tugasakhir.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

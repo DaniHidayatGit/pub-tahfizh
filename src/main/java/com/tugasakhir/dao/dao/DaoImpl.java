@@ -29,9 +29,6 @@ public class DaoImpl extends DBHandler implements Dao {
     public ResponseEntity<?> get(HttpServletRequest request) {
         log.info(log_template_enter, "get", new java.util.Date(), request.getRemoteAddr(), "");
         try {
-
-            log.info(log_template_sout, "SAYA ANAK MAMA");
-
             log.info(log_template_response, "get", new java.util.Date(), request.getRemoteAddr(), "Success");
             return Response.response("Success", HttpStatus.OK);
         } catch (RuntimeException e){

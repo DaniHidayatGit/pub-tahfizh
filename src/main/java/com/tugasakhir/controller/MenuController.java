@@ -23,4 +23,9 @@ public class MenuController {
     public ResponseEntity<?> getMenuJson(HttpServletRequest request) {
         return masterMenuDao.getMenuJson(request);
     }
+    @Operation(summary = "GET ALL MENU")
+    @GetMapping("/getallmenu")
+    public ResponseEntity<?> getallmenu() {
+        return masterMenuDao.getAllMenuJson();
+    }
 }

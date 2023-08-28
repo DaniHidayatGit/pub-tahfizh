@@ -777,7 +777,9 @@ public class DBHandler extends JdbcDaoSupport {
                     call.setDate(i + 2, new Date(date.getTime()));
                 } else if (obj[i].getClass().equals(Timestamp.class)) {
                     call.setTimestamp(i + 2, (Timestamp) obj[i]);
-                } else if (obj[i].getClass().equals(String[].class)) {
+                } else if (obj[i].getClass().equals(Boolean.class)) {
+                    call.setBoolean(i + 2, (Boolean) obj[i]);
+                }else if (obj[i].getClass().equals(String[].class)) {
                     final Array array = con.createArrayOf("varchar", (String[]) obj[i]);
                     call.setArray(i + 2, array);
                 }

@@ -78,7 +78,7 @@ public class JwtTokenUtil extends DBQueryHandler {
         Connection con = Connect();
         try {
             List<LinkedHashMap<String, Object>> listTokenValidate = Select(con, "master_token_active", new String[]{"token_jwt"}, new ArrayList<SQLWhereObject>() {{
-                add(new SQLWhereObject("username", SQLOperation.EQUAL, userName));
+                add(new SQLWhereObject("user_name", SQLOperation.EQUAL, userName));
             }}, new com.tugasakhir.util.ObjectMapper());
             List<String> tokenValidates = new ArrayList<>();
             listTokenValidate.forEach((tokenValidate) -> {
