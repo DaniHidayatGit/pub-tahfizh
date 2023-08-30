@@ -21,8 +21,8 @@ public class NilaiController {
 
     @GetMapping("/getMasterNilai")
     public ResponseEntity<?> getMasterNilai(
-            @RequestParam(required = false) String nilai_id,
-            @RequestParam(required = false) String is_active,
+            @RequestParam(required = false, defaultValue = "") String nilai_id,
+            @RequestParam(required = false, defaultValue = "") String is_active,
             HttpServletRequest request
     ){
         return dao.getMasterNilai(nilai_id, is_active, request);
@@ -37,9 +37,9 @@ public class NilaiController {
 
     @GetMapping("/getNilai")
     public ResponseEntity<?> getNilai(
-            @RequestParam(required = false) String surah_id,
-            @RequestParam(required = false) String tanggal,
-            @RequestParam(required = false) String mahasiswa_id,
+            @RequestParam(required = false, defaultValue = "") String surah_id,
+            @RequestParam(required = false, defaultValue = "") String tanggal,
+            @RequestParam(required = false, defaultValue = "") String mahasiswa_id,
             HttpServletRequest request
     ){
         return dao.getNilai(surah_id, tanggal, mahasiswa_id, request);

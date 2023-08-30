@@ -140,7 +140,7 @@ public class MasterMenuDaoImpl extends DBQueryHandler implements MasterMenuDao {
             return Response.response(listMenuResp, listMenuResp.size(), HttpStatus.OK);
         } catch (Exception e) {
             Rollback(con);
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         } finally {
             Close(con);
         }

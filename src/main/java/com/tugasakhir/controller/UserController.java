@@ -30,7 +30,7 @@ public class UserController {
     @Operation(summary = "GET USER")
     @GetMapping("/getUser")
     public ResponseEntity<?> getUser(
-            @RequestParam(required = false) String user_id,
+            @RequestParam(required = false, defaultValue = "") String user_id,
             HttpServletRequest request
     ){
         return userDao.getUser(user_id, request);

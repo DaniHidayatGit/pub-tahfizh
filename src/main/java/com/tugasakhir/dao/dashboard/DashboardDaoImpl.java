@@ -32,7 +32,7 @@ public class DashboardDaoImpl extends DBHandler implements DashboardDao {
             List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("", obj, new Mapper());
             return Response.response(linkedHashMaps, HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

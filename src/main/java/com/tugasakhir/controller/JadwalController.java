@@ -18,11 +18,11 @@ public class JadwalController {
     private final JadwalDao dao;
     @GetMapping("/getJadwal")
     public ResponseEntity<?> getJadwal(
-            @RequestParam(required = false) String jadwal_id,
-            @RequestParam(required = false) String day,
-            @RequestParam(required = false) String month,
-            @RequestParam(required = false) String year,
-            @RequestParam(required = false) String mahasiswa_id,
+            @RequestParam(required = false, defaultValue = "") String jadwal_id,
+            @RequestParam(required = false, defaultValue = "") String day,
+            @RequestParam(required = false, defaultValue = "") String month,
+            @RequestParam(required = false, defaultValue = "") String year,
+            @RequestParam(required = false, defaultValue = "") String mahasiswa_id,
             HttpServletRequest request
     ){
         return dao.getJadwal(jadwal_id, day, month, year, mahasiswa_id, request);

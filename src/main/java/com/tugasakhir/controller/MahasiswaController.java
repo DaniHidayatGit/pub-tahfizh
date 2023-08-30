@@ -19,10 +19,10 @@ public class MahasiswaController {
     private final MahasiswaDao dao;
     @GetMapping("/getAngkatan")
     public ResponseEntity<?> getAngkatan(
-        @RequestParam(required = false) String id,
-        @RequestParam(required = false) String angkatan,
-        @RequestParam(required = false) String nama_angkatan,
-        @RequestParam(required = false) String is_active,
+        @RequestParam(required = false, defaultValue = "") String id,
+        @RequestParam(required = false, defaultValue = "") String angkatan,
+        @RequestParam(required = false, defaultValue = "") String nama_angkatan,
+        @RequestParam(required = false, defaultValue = "") String is_active,
         HttpServletRequest request
     ) {
         return dao.getAngkatan(id, angkatan, nama_angkatan, is_active, request);
@@ -37,10 +37,10 @@ public class MahasiswaController {
 
     @GetMapping("/getMahasiswa")
     public ResponseEntity<?> getMahasiswa(
-            @RequestParam(required = false) String angkatan,
-            @RequestParam(required = false) String mahasiswa_id,
-            @RequestParam(required = false) String nama_mahasiswa,
-            @RequestParam(required = false) String is_active,
+            @RequestParam(required = false, defaultValue = "") String angkatan,
+            @RequestParam(required = false, defaultValue = "") String mahasiswa_id,
+            @RequestParam(required = false, defaultValue = "") String nama_mahasiswa,
+            @RequestParam(required = false, defaultValue = "") String is_active,
             HttpServletRequest request
     ){
         return dao.getMahasiswa(angkatan, mahasiswa_id, nama_mahasiswa, is_active, request);

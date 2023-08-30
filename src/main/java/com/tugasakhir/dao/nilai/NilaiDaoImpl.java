@@ -37,7 +37,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
             LinkedHashMap<String, String> linkedHashMap = ExecuteSingleCallPostgre("func_nilai_get", obj, new Mapper());
             return Response.response(linkedHashMap, HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -55,7 +55,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
             }
             return Response.response("Berhasil mengupdate master nilai", HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -66,7 +66,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
             List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("", obj, new Mapper());
             return Response.response(linkedHashMaps, HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -100,7 +100,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
             }
             return Response.response("Berhasil melakukan penilaian", HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

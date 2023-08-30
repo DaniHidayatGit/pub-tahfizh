@@ -54,7 +54,7 @@ public class UserDaoImpl extends DBHandler implements UserDao {
             String result = ExecuteUpdateCallPostgres("user_func_create", obj);
             if(!result.equals("USER BERHASIL DIBUAT")){
                 log.error(log_template_error, "insertUser", result, new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
-                return Response.response(result, HttpStatus.INTERNAL_SERVER_ERROR);
+                return Response.response(result, HttpStatus.BAD_REQUEST);
             }
             log.info(log_template_response, "insertUser", new java.util.Date(), request.getRemoteAddr(), result);
             return Response.response(result, HttpStatus.OK);

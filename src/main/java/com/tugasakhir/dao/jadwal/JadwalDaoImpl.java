@@ -34,7 +34,7 @@ public class JadwalDaoImpl extends DBHandler implements JadwalDao {
             List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("func_jadwal_get", obj, new Mapper());
             return Response.response(linkedHashMaps, HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -53,7 +53,7 @@ public class JadwalDaoImpl extends DBHandler implements JadwalDao {
             }
             return Response.response(msg, HttpStatus.OK);
         } catch (RuntimeException e){
-            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

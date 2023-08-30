@@ -26,8 +26,8 @@ public class TanggalController {
     private final TanggalDao dao;
     @GetMapping("/buildtanggal")
     private ResponseEntity<?> getTanggal(
-        @RequestParam(required = false) String bulan,
-        @RequestParam(required = false) String tahun
+        @RequestParam String bulan,
+        @RequestParam String tahun
     ){
         String slice = tahun + "-" + bulan + "-" + "01";
         Date date1 = null;

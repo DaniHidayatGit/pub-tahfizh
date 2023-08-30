@@ -17,9 +17,9 @@ public class SurahController {
     private final SurahDao dao;
     @GetMapping("/getSurah")
     public ResponseEntity<?> getSurah(
-            @RequestParam(required = false) String surah,
-            @RequestParam(required = false) String seq,
-            @RequestParam(required = false) String mahasiswa_id,
+            @RequestParam(required = false, defaultValue = "") String surah,
+            @RequestParam(required = false, defaultValue = "") String seq,
+            @RequestParam(required = false, defaultValue = "") String mahasiswa_id,
             HttpServletRequest request
     ){
         return dao.getSurah(surah, seq, mahasiswa_id, request);
