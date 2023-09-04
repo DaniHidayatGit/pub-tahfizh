@@ -66,6 +66,7 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
             if(!msg.equals("Success")){
                 throw new RuntimeException(msg);
             }
+            Commit(con);
             return Response.response(msg, HttpStatus.OK);
         } catch (RuntimeException e){
             Rollback(con);
@@ -114,6 +115,7 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
             if(!msg.equals("Success")){
                 throw new RuntimeException(msg);
             }
+            Commit(con);
             return Response.response(msg, HttpStatus.OK);
         } catch (RuntimeException e){
             Rollback(con);
