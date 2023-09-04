@@ -68,7 +68,7 @@ public class UserDaoImpl extends DBHandler implements UserDao {
     public ResponseEntity<?> getUser(String user_id, HttpServletRequest request) {
         try {
             Object[] obj = {user_id};
-            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("user_func_getbyusername", obj, new Mapper());
+            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("user_func_getuser", obj, new Mapper());
             return Response.response(linkedHashMaps, HttpStatus.OK);
         } catch (RuntimeException e){
             return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
