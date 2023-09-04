@@ -54,7 +54,8 @@ public class BasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui/**",
                 "/logout",
                 "/buildtanggal",
-                "/user/create"
+                "/user/create",
+                "/tugas-akhir/**"
         };
 
         http.csrf().disable().cors()
