@@ -30,7 +30,7 @@ public class SurahDaoImpl extends DBHandler implements SurahDao {
     public ResponseEntity<?> getSurah(String surah, String seq, String mahasiswa_id, HttpServletRequest request) {
         try {
             Object[] obj = {surah, seq, mahasiswa_id};
-            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("surah_func_get", obj, new Mapper());
+            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("func_surah_get", obj, new Mapper());
             return Response.response(linkedHashMaps, HttpStatus.OK);
         } catch (RuntimeException e){
             return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
