@@ -6,5 +6,5 @@ import lombok.Data;
 public class MasterNilaiRequest {
     private String nilai_id;
     private String nama_penilaian;
-    private String is_active;
+    private Boolean is_active;
 }
