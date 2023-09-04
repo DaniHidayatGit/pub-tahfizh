@@ -29,7 +29,7 @@ public class MahasiswaController {
     }
     @PostMapping("/updateAngkatan")
     public ResponseEntity<?> updateAngkatan(
-            AngkatanRequest angkatanRequest,
+            @RequestBody AngkatanRequest angkatanRequest,
             HttpServletRequest request
     ){
         return dao.updateAngkatan(angkatanRequest, request);
