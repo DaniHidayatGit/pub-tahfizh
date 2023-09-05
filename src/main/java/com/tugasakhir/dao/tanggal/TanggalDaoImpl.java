@@ -54,6 +54,8 @@ public class TanggalDaoImpl extends DBHandler implements TanggalDao {
                         break;
                     }
                 }
+                List<LinkedHashMap<String, String>> listMahasiswas = ExecuteCallPostgre("func_jadwal_get_tanggal", new Object[]{a, Integer.parseInt(bulan), Integer.parseInt(tahun)}, new Mapper());
+                buildTanggal.setListMahasiswa(listMahasiswas);
                 buildTanggals.add(buildTanggal);
             }
             return buildTanggals;
