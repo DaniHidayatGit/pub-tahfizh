@@ -77,5 +77,4 @@ public class TanggalDaoImpl extends DBHandler implements TanggalDao {
         }
         return buildTanggals;
     }
-
 }
