@@ -5,6 +5,8 @@ import com.tugasakhir.configuration.Response;
 import com.tugasakhir.model.MasterNilaiRequest;
 import com.tugasakhir.model.PenilaianDetailRequest;
 import com.tugasakhir.model.PenilaianRequest;
+import com.tugasakhir.util.Helpers;
+import com.tugasakhir.util.ObjectMapper;
 import com.tugasakhir.util.mapper.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -62,8 +64,15 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
     @Override
     public ResponseEntity<?> getNilai(String surah_id, String tanggal, String mahasiswa_id, HttpServletRequest request) {
         try {
-            Object[] obj = {mahasiswa_id};
-            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("", obj, new Mapper());
+            Object[] obj = {surah_id, tanggal, mahasiswa_id};
+            List<LinkedHashMap<String, Object>> linkedHashMaps = ExecuteCallPostgre("func_nilai_get", obj, new ObjectMapper());
+            for(LinkedHashMap<String, Object> linkedHashMap : linkedHashMaps){
+                Object[] objDetail = {
+                        Helpers.getString(linkedHashMap.get("penilaian_id"))
+                };
+                List<LinkedHashMap<String, Object>> linkedHashMaps2 = ExecuteCallPostgre("func_nilai_get_detail", objDetail, new ObjectMapper());
+                linkedHashMap.put("details", linkedHashMaps2);
+            }
             return Response.response(linkedHashMaps, HttpStatus.OK);
         } catch (RuntimeException e){
             return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
