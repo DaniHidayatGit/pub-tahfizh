@@ -46,7 +46,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
         try {
             Object[] obj = {
                     masterNilaiRequest.getNilai_id(),
-                    masterNilaiRequest.getNama_penilaian(),
+                    masterNilaiRequest.getNama_penilaian().toUpperCase(),
                     masterNilaiRequest.getIs_active()
             };
             String msg = ExecuteUpdateCallPostgres("func_nilai_action", obj);
