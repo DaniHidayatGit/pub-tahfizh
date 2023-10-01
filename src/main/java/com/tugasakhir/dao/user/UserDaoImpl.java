@@ -4,6 +4,7 @@ import com.tugasakhir.configuration.DBHandler;
 import com.tugasakhir.configuration.Response;
 import com.tugasakhir.model.UserRequest;
 import com.tugasakhir.util.Helpers;
+import com.tugasakhir.util.jwt.JwtTokenResponse;
 import com.tugasakhir.util.jwt.SessionUtil;
 import com.tugasakhir.util.mapper.Mapper;
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +40,14 @@ public class UserDaoImpl extends DBHandler implements UserDao {
         log.info(log_template_enter, "insertUser", new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
         try {
             userRequest.setUser_password(bCryptPasswordEncoder.encode(userRequest.getUser_password()));
+            JwtTokenResponse response = SessionUtil.getUserData(request);
             Object[] obj = {
                     userRequest.getUser_name(),
                     userRequest.getUser_password(),
                     userRequest.getRole_id(),
                     userRequest.getMail(),
                     userRequest.getUser_active(),
-                    "DEV TAHFIZH",
+                    response.getUser_name(),
                     userRequest.getFull_name(),
                     userRequest.getPhone(),
                     "alamat",
@@ -61,6 +63,56 @@ public class UserDaoImpl extends DBHandler implements UserDao {
         } catch (RuntimeException e){
             log.error(log_template_error, "insertUser", e.getMessage(), new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
             return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @Override
+    public ResponseEntity<?> updateUser(UserRequest userRequest, HttpServletRequest request) {
+        log.info(log_template_enter, "updateUser", new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
+        try {
+            JwtTokenResponse response = SessionUtil.getUserData(request);
+            userRequest.setUser_password(bCryptPasswordEncoder.encode(userRequest.getUser_password()));
+            Object[] obj = {
+                    userRequest.getUser_name(),
+                    userRequest.getUser_password(),
+                    userRequest.getRole_id(),
+                    userRequest.getMail(),
+                    userRequest.getUser_active(),
+                    response.getUser_name(),
+                    userRequest.getFull_name(),
+                    userRequest.getPhone(),
+                    "alamat",
+                    "foto"
+            };
+            String result = ExecuteUpdateCallPostgres("user_func_update", obj);
+            if(!result.equals("Success")){
+                log.error(log_template_error, "updateUser", result, new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
+                return Response.response(result, HttpStatus.BAD_REQUEST);
+            }
+            log.info(log_template_response, "updateUser", new java.util.Date(), request.getRemoteAddr(), result);
+            return Response.response("User berhasil diupdate", HttpStatus.OK);
+        } catch (RuntimeException e){
+            log.error(log_template_error, "updateUser", e.getMessage(), new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
+            return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> deleteUser(String user_name, HttpServletRequest request) {
+        log.info(log_template_enter, "deleteUser", new java.util.Date(), request.getRemoteAddr(), user_name);
+        try {
+            Object[] obj = {
+                    user_name
+            };
+            String result = ExecuteUpdateCallPostgres("user_func_delete", obj);
+            if(!result.equals("Success")){
+                log.error(log_template_error, "deleteUser", result, new java.util.Date(), request.getRemoteAddr(), user_name);
+                return Response.response(result, HttpStatus.BAD_REQUEST);
+            }
+            log.info(log_template_response, "deleteUser", new java.util.Date(), request.getRemoteAddr(), result);
+            return Response.response("User berhasil didelete", HttpStatus.OK);
+        } catch (RuntimeException e){
+            log.error(log_template_error, "deleteUser", e.getMessage(), new java.util.Date(), request.getRemoteAddr(), user_name);
+            return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

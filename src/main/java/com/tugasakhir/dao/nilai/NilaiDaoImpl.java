@@ -94,6 +94,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
                         e.getKeterangan()
                 };
                 String penilaian_id = ExecuteUpdateCallPostgres("func_penilaian_action", obj);
+                System.out.println(penilaian_id);
                 for(PenilaianDetailRequest f : e.getDetails()){
                     Object[] obj2 = {
                             penilaian_id,
@@ -102,6 +103,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
                             e.getKeterangan()
                     };
                     String msg2 = ExecuteUpdateCallPostgres("func_penilaian_detail_action", obj2);
+                    System.out.println(msg2);
                     if(!msg2.equals("Success")){
                         return Response.response(msg2, HttpStatus.BAD_REQUEST);
                     }

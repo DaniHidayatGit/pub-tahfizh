@@ -27,6 +27,22 @@ public class UserController {
         return userDao.insertUser(userRequest, request);
     }
 
+    @Operation(summary = "UPDATE USER")
+    @PostMapping("/update")
+    public ResponseEntity<?> updateUser(
+            @RequestBody UserRequest userRequest,
+            HttpServletRequest request
+    ){
+        return userDao.updateUser(userRequest, request);
+    }
+    @Operation(summary = "DELETE USER")
+    @PostMapping("/delete")
+    public ResponseEntity<?> updateUser(
+            @RequestParam String user_name,
+            HttpServletRequest request
+    ){
+        return userDao.deleteUser(user_name, request);
+    }
     @Operation(summary = "GET USER")
     @GetMapping("/getUser")
     public ResponseEntity<?> getUser(
