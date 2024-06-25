@@ -1,11 +1,9 @@
 package com.tugasakhir.dao.mahasiswa;
 
-import com.tugasakhir.configuration.DBHandler;
 import com.tugasakhir.configuration.DBQueryHandler;
 import com.tugasakhir.configuration.Response;
 import com.tugasakhir.model.AngkatanRequest;
 import com.tugasakhir.model.MahasiswaRequest;
-import com.tugasakhir.util.ObjectMapper;
 import com.tugasakhir.util.mapper.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +16,8 @@ import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static com.tugasakhir.util.Helpers.*;
 
 @Slf4j
 @Service
@@ -56,6 +56,9 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
     public ResponseEntity<?> updateAngkatan(AngkatanRequest angkatanRequest, HttpServletRequest request) {
         Connection con = Connect();
         try {
+            if(!(angkatanRequest.getAngkatan() != null && angkatanRequest.getAngkatan().matches("[0-9]+")))
+                throw new RuntimeException("Angkatannya harus berupa angka");
+
             Object[] obj = {
                     angkatanRequest.getId(),
                     angkatanRequest.getAngkatan(),
@@ -101,6 +104,9 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
     public ResponseEntity<?> updateMahasiswa(MahasiswaRequest mahasiswaRequest, HttpServletRequest request) {
         Connection con = Connect();
         try {
+            if(!isValidEmail(mahasiswaRequest.getEmail()))
+                throw new RuntimeException("Mohon berikan inputan email yang valid!");
+
             Object[] obj = {
                     mahasiswaRequest.getMahasiswa_id(),
                     mahasiswaRequest.getNama_mahasiswa(),
