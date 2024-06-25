@@ -56,8 +56,11 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
     public ResponseEntity<?> updateAngkatan(AngkatanRequest angkatanRequest, HttpServletRequest request) {
         Connection con = Connect();
         try {
+            if(angkatanRequest.getAngkatan().isEmpty() || angkatanRequest.getNama_angkatan().isEmpty())
+                throw new RuntimeException("Data harus diisi!");
+
             if(!(angkatanRequest.getAngkatan() != null && angkatanRequest.getAngkatan().matches("[0-9]+")))
-                throw new RuntimeException("Angkatannya harus berupa angka");
+                throw new RuntimeException("Angkatannya harus berupa angka!");
 
             Object[] obj = {
                     angkatanRequest.getId(),
@@ -70,7 +73,10 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
                 throw new RuntimeException(msg);
             }
             Commit(con);
-            return Response.response(msg, HttpStatus.OK);
+            if(angkatanRequest.getId().isEmpty())
+                return Response.response("Data berhasil disimpan", HttpStatus.OK);
+            else
+                return Response.response("Data berhasil diubah", HttpStatus.OK);
         } catch (RuntimeException e){
             Rollback(con);
             return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
