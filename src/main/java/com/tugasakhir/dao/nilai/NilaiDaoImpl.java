@@ -19,6 +19,9 @@ import javax.transaction.Transactional;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.tugasakhir.util.Helpers.getInteger;
+import static com.tugasakhir.util.Helpers.getString;
+
 @Slf4j
 @Service
 @Transactional
@@ -97,9 +100,9 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
                 System.out.println(penilaian_id);
                 for(PenilaianDetailRequest f : e.getDetails()){
                     Object[] obj2 = {
-                            penilaian_id,
-                            f.getNilai_id(),
-                            Helpers.getInteger(f.getNilai()),
+                            getInteger(penilaian_id),
+                            getInteger(f.getNilai_id()),
+                            getInteger(f.getNilai()),
                             e.getKeterangan()
                     };
                     String msg2 = ExecuteUpdateCallPostgres("func_penilaian_detail_action", obj2);
