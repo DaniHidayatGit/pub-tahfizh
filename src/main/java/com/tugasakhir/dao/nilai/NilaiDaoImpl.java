@@ -99,7 +99,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
                     Object[] obj2 = {
                             penilaian_id,
                             f.getNilai_id(),
-                            f.getNilai(),
+                            Helpers.getInteger(f.getNilai()),
                             e.getKeterangan()
                     };
                     String msg2 = ExecuteUpdateCallPostgres("func_penilaian_detail_action", obj2);

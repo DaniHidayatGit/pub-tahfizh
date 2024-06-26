@@ -8,6 +8,7 @@ import com.tugasakhir.util.mapper.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +24,11 @@ import static com.tugasakhir.util.Helpers.*;
 @Service
 @Transactional
 public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
-    public MahasiswaDaoImpl(DataSource dataSource){
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    public MahasiswaDaoImpl(DataSource dataSource, BCryptPasswordEncoder bCryptPasswordEncoder){
         this.setDataSource(dataSource);
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     private final String log_template_enter = "\u001B[34m" + "ENTER -- PROCESSES: {} -- DATE: {} -- IP: {} -- Param: {}" + "\u001B[0m";
     private final String log_template_sout = "\u001B[34m" + "SOUT -- {}" + "\u001B[0m";
