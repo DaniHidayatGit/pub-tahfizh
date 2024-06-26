@@ -10,5 +10,4 @@ public class MahasiswaRequest {
     private String nomor_hp;
     private Boolean is_active;
     private String angkatan;
-    private String is_deleted;
 }

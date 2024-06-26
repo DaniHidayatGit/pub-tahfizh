@@ -817,7 +817,9 @@ public class DBQueryHandler extends JdbcDaoSupport {
             call =  con.prepareCall(sql);
             call.registerOutParameter(1, Types.VARCHAR);
             for (int i = 0; i < params.length; i++) {
-                if (params[i].getClass().equals(String.class)) {
+                if (params[i] == null) {
+                    call.setNull(i + 1, Types.NULL);
+                }else if (params[i].getClass().equals(String.class)) {
                     call.setString(i + 2, (String) params[i]);
                 } else if (params[i].getClass().equals(Integer.class)) {
                     call.setInt(i + 2, (Integer) params[i]);
@@ -935,7 +937,9 @@ public class DBQueryHandler extends JdbcDaoSupport {
             call = con.prepareCall(sql);
             call.registerOutParameter(1, Types.OTHER);
             for (int i = 0; i < objects.length; i++) {
-                if (objects[i].getClass().equals(String.class)) {
+                if (objects[i] == null) {
+                    call.setNull(i + 1, Types.NULL);
+                }else if (objects[i].getClass().equals(String.class)) {
                     call.setString(i + 2, (String) objects[i]);
                 } else if (objects[i].getClass().equals(Integer.class)) {
                     call.setInt(i + 2, (Integer) objects[i]);
@@ -1016,7 +1020,9 @@ public class DBQueryHandler extends JdbcDaoSupport {
             call = con.prepareCall(sql);
             call.registerOutParameter(1, Types.OTHER);
             for (int i = 0; i < obj.length; i++) {
-                if (obj[i].getClass().equals(String.class)) {
+                if (obj[i] == null) {
+                    call.setNull(i + 1, Types.NULL);
+                }else if (obj[i].getClass().equals(String.class)) {
                     call.setString(i + 2, (String) obj[i]);
                 } else if (obj[i].getClass().equals(Integer.class)) {
                     call.setInt(i + 2, (Integer) obj[i]);

@@ -120,8 +120,7 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
                     mahasiswaRequest.getNomor_hp(),
                     mahasiswaRequest.getIs_active(),
                     mahasiswaRequest.getAngkatan(),
-                    "1",
-                    mahasiswaRequest.getIs_deleted()
+                    "1"
             };
             String msg = CallFunctionRetString(con,"func_mahasiswa_action", obj);
             if(!msg.equals("Success")){
