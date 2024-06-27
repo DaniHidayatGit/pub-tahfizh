@@ -59,7 +59,7 @@ public class UserDaoImpl extends DBHandler implements UserDao {
                 return Response.response(result, HttpStatus.BAD_REQUEST);
             }
             log.info(log_template_response, "insertUser", new java.util.Date(), request.getRemoteAddr(), result);
-            return Response.response(result, HttpStatus.OK);
+            return Response.response("User berhasil disimpan", HttpStatus.OK);
         } catch (RuntimeException e){
             log.error(log_template_error, "insertUser", e.getMessage(), new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
             return Response.response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

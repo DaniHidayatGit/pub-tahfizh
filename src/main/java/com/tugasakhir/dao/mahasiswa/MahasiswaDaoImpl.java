@@ -90,14 +90,15 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
     }
 
     @Override
-    public ResponseEntity<?> getMahasiswa(String angkatan, String mahasiswa_id, String nama_mahasiswa, String is_active, HttpServletRequest request) {
+    public ResponseEntity<?> getMahasiswa(String angkatan, String mahasiswa_id, String nama_mahasiswa, String is_active, String cek_jadwal, HttpServletRequest request) {
         Connection con = Connect();
         try {
             Object[] obj = {
                     angkatan,
                     mahasiswa_id,
                     nama_mahasiswa,
-                    is_active
+                    is_active,
+                    cek_jadwal
             };
             List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre(con, "func_mahasiswa_get", obj, new Mapper());
             Commit(con);
@@ -116,6 +117,7 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
         try {
             if(!isValidEmail(mahasiswaRequest.getEmail()))
                 throw new RuntimeException("Mohon berikan inputan email yang valid!");
+            String password = bCryptPasswordEncoder.encode(mahasiswaRequest.getAngkatan());
 
             Object[] obj = {
                     mahasiswaRequest.getMahasiswa_id(),
@@ -124,7 +126,8 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
                     mahasiswaRequest.getNomor_hp(),
                     mahasiswaRequest.getIs_active(),
                     mahasiswaRequest.getAngkatan(),
-                    "1"
+                    "0",
+                    password
             };
             String msg = CallFunctionRetString(con,"func_mahasiswa_action", obj);
             if(!msg.equals("Success")){

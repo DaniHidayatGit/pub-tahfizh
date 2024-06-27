@@ -39,7 +39,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
     public ResponseEntity<?> getMasterNilai(String nilai_id, String is_active, HttpServletRequest request) {
         try {
             Object[] obj = {nilai_id, is_active};
-            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("func_nilai_get", obj, new Mapper());
+            List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("func_master_nilai_get", obj, new Mapper());
             return Response.response(linkedHashMaps, HttpStatus.OK);
         } catch (RuntimeException e){
             return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -54,7 +54,7 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
                     masterNilaiRequest.getNama_penilaian().toUpperCase(),
                     masterNilaiRequest.getIs_active()
             };
-            String msg = ExecuteUpdateCallPostgres("func_nilai_action", obj);
+            String msg = ExecuteUpdateCallPostgres("func_master_nilai_action", obj);
             if(!msg.equals("Success")){
                 return Response.response(msg, HttpStatus.BAD_REQUEST);
             }

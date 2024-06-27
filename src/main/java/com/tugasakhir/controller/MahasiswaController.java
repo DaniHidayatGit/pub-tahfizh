@@ -41,9 +41,12 @@ public class MahasiswaController {
             @RequestParam(required = false, defaultValue = "") String mahasiswa_id,
             @RequestParam(required = false, defaultValue = "") String nama_mahasiswa,
             @RequestParam(required = false, defaultValue = "") String is_active,
+            @RequestParam(required = false, defaultValue = "") String cek_jadwal,
             HttpServletRequest request
     ){
-        return dao.getMahasiswa(angkatan, mahasiswa_id, nama_mahasiswa, is_active, request);
+        if(cek_jadwal.equals("undefined"))
+            cek_jadwal = "";
+        return dao.getMahasiswa(angkatan, mahasiswa_id, nama_mahasiswa, is_active, cek_jadwal, request);
     }
     @PostMapping("/updateMahasiswa")
     public ResponseEntity<?> updateMahasiswa(
