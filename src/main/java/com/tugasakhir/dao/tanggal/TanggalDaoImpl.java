@@ -50,7 +50,7 @@ public class TanggalDaoImpl extends DBHandler implements TanggalDao {
                 buildTanggal.setActive(true);
                 buildTanggal.setFlag("GREY");
                 if(day == a)
-                    buildTanggal.setFlag("Active");
+                    buildTanggal.setFlag("ACTIVE");
 
                 for(LinkedHashMap<String, String> e : linkedHashMaps){
                     int tanggal = Integer.parseInt(e.get("tanggal"));
