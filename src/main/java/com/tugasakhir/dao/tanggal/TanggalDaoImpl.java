@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,6 +38,9 @@ public class TanggalDaoImpl extends DBHandler implements TanggalDao {
     @Override
     public List<BuildTanggal> thisMonth(Integer totalHariBulanIni, String bulan, String tahun) {
         try {
+            LocalDate today = LocalDate.now();
+            int day = today.getDayOfMonth();
+
             Object[] obj = {bulan, tahun};
             List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("func_tanggal_get", obj, new Mapper());
             List<BuildTanggal> buildTanggals = new ArrayList<>();
@@ -45,10 +49,15 @@ public class TanggalDaoImpl extends DBHandler implements TanggalDao {
                 buildTanggal.setTanggal(a);
                 buildTanggal.setActive(true);
                 buildTanggal.setFlag("GREY");
+                if(day == a)
+                    buildTanggal.setFlag("Active");
+
                 for(LinkedHashMap<String, String> e : linkedHashMaps){
                     int tanggal = Integer.parseInt(e.get("tanggal"));
                     if(tanggal == a){
                         buildTanggal.setFlag(e.get("flagging"));
+                        if(day == a)
+                            buildTanggal.setFlag("ACTIVE");
                         break;
                     } else if(tanggal >= a){
                         break;
