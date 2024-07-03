@@ -2,9 +2,7 @@ package com.tugasakhir.dao.nilai;
 
 import com.tugasakhir.configuration.DBHandler;
 import com.tugasakhir.configuration.Response;
-import com.tugasakhir.model.MasterNilaiRequest;
-import com.tugasakhir.model.PenilaianDetailRequest;
-import com.tugasakhir.model.PenilaianRequest;
+import com.tugasakhir.model.*;
 import com.tugasakhir.util.Helpers;
 import com.tugasakhir.util.ObjectMapper;
 import com.tugasakhir.util.mapper.Mapper;
@@ -16,8 +14,11 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.tugasakhir.util.Helpers.getInteger;
 import static com.tugasakhir.util.Helpers.getString;
@@ -69,14 +70,40 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
         try {
             Object[] obj = {surah_id, tanggal, mahasiswa_id};
             List<LinkedHashMap<String, Object>> linkedHashMaps = ExecuteCallPostgre("func_nilai_get", obj, new ObjectMapper());
+            if(linkedHashMaps == null){
+                throw new RuntimeException("Data penilaian belum ada!");
+            }
             for(LinkedHashMap<String, Object> linkedHashMap : linkedHashMaps){
                 Object[] objDetail = {
-                        Helpers.getString(linkedHashMap.get("penilaian_id"))
+                        getString(linkedHashMap.get("penilaian_id"))
                 };
                 List<LinkedHashMap<String, Object>> linkedHashMaps2 = ExecuteCallPostgre("func_nilai_get_detail", objDetail, new ObjectMapper());
                 linkedHashMap.put("details", linkedHashMaps2);
             }
-            return Response.response(linkedHashMaps, HttpStatus.OK);
+            System.out.println(linkedHashMaps);
+
+            List<String> waktu = new ArrayList<>(Collections.emptyList());
+            String test = "";
+            String test2 = "";
+            for(LinkedHashMap<String, Object> e : linkedHashMaps) {
+                test = getString(e.get("waktu"));
+                if(!test.equals(test2)){
+                    test2 = test;
+                    waktu.add(test2);
+                    System.out.println(waktu);
+                }
+            }
+
+            List<NilaiResponse> list = new ArrayList<>();
+            for(String e : waktu){
+                NilaiResponse nilaiResponse = new NilaiResponse();
+                nilaiResponse.setWaktu(e);
+                List<LinkedHashMap<String, Object>> child = linkedHashMaps.stream().filter(y -> y.get("waktu").equals(e)).collect(Collectors.toList());
+                nilaiResponse.setList(child);
+                list.add(nilaiResponse);
+            }
+            System.out.println(list);
+            return Response.response(list, HttpStatus.OK);
         } catch (RuntimeException e){
             return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

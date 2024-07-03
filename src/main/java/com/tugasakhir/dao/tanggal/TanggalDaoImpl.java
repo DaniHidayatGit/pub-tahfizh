@@ -39,7 +39,9 @@ public class TanggalDaoImpl extends DBHandler implements TanggalDao {
     public List<BuildTanggal> thisMonth(Integer totalHariBulanIni, String bulan, String tahun) {
         try {
             LocalDate today = LocalDate.now();
-            int day = today.getDayOfMonth();
+            int day = today.getDayOfMonth(); // tanggal
+            int month = today.getMonthValue(); // bulan
+            int year = today.getYear(); // tahun
 
             Object[] obj = {bulan, tahun};
             List<LinkedHashMap<String, String>> linkedHashMaps = ExecuteCallPostgre("func_tanggal_get", obj, new Mapper());
@@ -49,14 +51,14 @@ public class TanggalDaoImpl extends DBHandler implements TanggalDao {
                 buildTanggal.setTanggal(a);
                 buildTanggal.setActive(true);
                 buildTanggal.setFlag("GREY");
-                if(day == a)
+                if(day == a && month == Helpers.getInteger(bulan)  && year == Helpers.getInteger(tahun))
                     buildTanggal.setFlag("ACTIVE");
 
                 for(LinkedHashMap<String, String> e : linkedHashMaps){
                     int tanggal = Integer.parseInt(e.get("tanggal"));
-                    if(tanggal == a){
+                    if(tanggal == a && month == Helpers.getInteger(bulan)  && year == Helpers.getInteger(tahun)){
                         buildTanggal.setFlag(e.get("flagging"));
-                        if(day == a)
+                        if(day == a && month == Helpers.getInteger(bulan)  && year == Helpers.getInteger(tahun))
                             buildTanggal.setFlag("ACTIVE");
                         break;
                     } else if(tanggal >= a){
