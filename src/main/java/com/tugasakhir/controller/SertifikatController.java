@@ -73,6 +73,7 @@ public class SertifikatController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", "certificate.pdf");
+        headers.add("Access-Control-Expose-Headers", "Content-Disposition");
 
         return ResponseEntity
                 .ok()
