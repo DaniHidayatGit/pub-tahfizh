@@ -21,6 +21,26 @@ public class Helpers {
     public static boolean isValidEmail(String email) {
         return EMAIL_PATTERN.matcher(email).matches();
     }
+    public static boolean isValidText(String text){
+        return (text == null || !text.matches("^[A-Za-z\\s]+$"));
+    }
+
+    public static void isValidTextCombo(String text, String combo){
+        if(text == null || !text.matches("^[A-Za-z\\s]+$"))
+            throw new RuntimeException("Mohon inputkan " + combo + " dengan benar!");
+    }
+
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        try {
+            Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
 
     public static String dateFormat(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");

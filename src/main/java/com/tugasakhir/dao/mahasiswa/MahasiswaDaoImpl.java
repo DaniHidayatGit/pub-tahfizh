@@ -61,7 +61,7 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
         Connection con = Connect();
         try {
             if(angkatanRequest.getAngkatan().isEmpty() || angkatanRequest.getNama_angkatan().isEmpty())
-                throw new RuntimeException("Data harus diisi!");
+                throw new RuntimeException("Mohon isi semua data!");
 
             if(!(angkatanRequest.getAngkatan() != null && angkatanRequest.getAngkatan().matches("[0-9]+")))
                 throw new RuntimeException("Angkatannya harus berupa angka!");
@@ -115,8 +115,17 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
     public ResponseEntity<?> updateMahasiswa(MahasiswaRequest mahasiswaRequest, HttpServletRequest request) {
         Connection con = Connect();
         try {
+            if(mahasiswaRequest.getNama_mahasiswa().isEmpty() || mahasiswaRequest.getEmail().isEmpty() || mahasiswaRequest.getNomor_hp().isEmpty() || mahasiswaRequest.getAngkatan().isEmpty())
+                throw new RuntimeException("Mohon isi semua data!");
+            if(mahasiswaRequest.getNama_mahasiswa().length() > 20)
+                throw new RuntimeException("Nama Mahasiswa maksimal 20 huruf");
+
+            isValidTextCombo(mahasiswaRequest.getNama_mahasiswa(), "nama mahasiswa");
+
             if(!isValidEmail(mahasiswaRequest.getEmail()))
                 throw new RuntimeException("Mohon berikan inputan email yang valid!");
+
+
             String password = bCryptPasswordEncoder.encode(mahasiswaRequest.getAngkatan());
 
             Object[] obj = {
@@ -134,7 +143,7 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
                 throw new RuntimeException(msg);
             }
             Commit(con);
-            return Response.response(msg, HttpStatus.OK);
+            return Response.response("Data berhasil disimpan!", HttpStatus.OK);
         } catch (RuntimeException e){
             Rollback(con);
             return Response.response(e.getMessage(), HttpStatus.BAD_REQUEST);

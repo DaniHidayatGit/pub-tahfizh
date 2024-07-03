@@ -86,6 +86,11 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
     public ResponseEntity<?> updateNilai(List<PenilaianRequest> penilaianRequest, HttpServletRequest request) {
         try {
             for(PenilaianRequest e : penilaianRequest){
+                if(e.getIs_lulus() == null)
+                    throw new RuntimeException("Mohon inputkan keterangan Lulus/Tidak Lulus!");
+                if(e.getDetails().isEmpty())
+                    throw new RuntimeException("Mohon inputkan detail penilaian!");
+
                 Object[] obj = {
                         e.getPenilaian_id(),
                         e.getMahasiswa_id(),
@@ -97,8 +102,14 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
                         e.getKeterangan()
                 };
                 String penilaian_id = ExecuteUpdateCallPostgres("func_penilaian_action", obj);
-                System.out.println(penilaian_id);
+
                 for(PenilaianDetailRequest f : e.getDetails()){
+                    if(!Helpers.isInteger(f.getNilai()))
+                        throw new RuntimeException("Mohon inputkan angka pada kolom detail penilaian!");
+
+                    if(getInteger(f.getNilai())> 100)
+                        throw new RuntimeException("Nilai tidak boleh melebihi 100!");
+
                     Object[] obj2 = {
                             getInteger(penilaian_id),
                             getInteger(f.getNilai_id()),
@@ -106,11 +117,26 @@ public class NilaiDaoImpl extends DBHandler implements NilaiDao {
                             e.getKeterangan()
                     };
                     String msg2 = ExecuteUpdateCallPostgres("func_penilaian_detail_action", obj2);
-                    System.out.println(msg2);
                     if(!msg2.equals("Success")){
                         return Response.response(msg2, HttpStatus.BAD_REQUEST);
                     }
                 }
+                if(e.getIs_lulus()) {
+                    int total_nilai = 0;
+                    for(PenilaianDetailRequest f : e.getDetails()){
+                        total_nilai += getInteger(f.getNilai());
+                    }
+                    if(total_nilai/e.getDetails().size() < 75)
+                        throw new RuntimeException("Minimal nilai status Lulus yaitu 75");
+                } else {
+                    int total_nilai = 0;
+                    for(PenilaianDetailRequest f : e.getDetails()){
+                        total_nilai += getInteger(f.getNilai());
+                    }
+                    if(total_nilai/e.getDetails().size() < 75)
+                        throw new RuntimeException("Maksimal nilai status Tidak Lulus yaitu 74");
+                }
+
             }
             return Response.response("Berhasil melakukan penilaian", HttpStatus.OK);
         } catch (RuntimeException e){
