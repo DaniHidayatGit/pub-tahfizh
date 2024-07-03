@@ -9,31 +9,30 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Canvas;
-import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+@Tag(name = "SERTIFIKAT")
+@CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
 @RestController
-public class CertificateController {
+@RequestMapping("/sertifikat")
+@RequiredArgsConstructor
+public class SertifikatController {
 
-    @GetMapping("/download/certificate/")
+    @GetMapping("/download")
     public ResponseEntity<byte[]> downloadCertificate(
+            @RequestParam String nama_mahasiswa
     ) throws IOException {
-        String name = "Dani Hidayat";
-
-        // Ambil nama dari database
-//        User user = userService.findById(userId);
-//        String name = user.getName();
 
         // Baca template PDF
         ClassPathResource pdfResource = new ClassPathResource("template_2.pdf");
@@ -57,7 +56,7 @@ public class CertificateController {
         PdfFont font = PdfFontFactory.createFont(fontResource.getPath(), PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
 
         // Tambahkan nama ke PDF pada posisi yang ditentukan
-        Paragraph paragraph = new Paragraph(name)
+        Paragraph paragraph = new Paragraph(nama_mahasiswa)
                 .setTextAlignment(TextAlignment.CENTER)
                 .setFontSize(70)
                 .setFont(font)
