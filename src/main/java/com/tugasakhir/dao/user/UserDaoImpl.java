@@ -84,7 +84,6 @@ public class UserDaoImpl extends DBHandler implements UserDao {
         log.info(log_template_enter, "updateUser", new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
         try {
             if (userRequest.getUser_name() == null || userRequest.getUser_name().isEmpty() ||
-                    userRequest.getUser_password() == null || userRequest.getUser_password().isEmpty() ||
                     userRequest.getUser_active() == null ||
                     userRequest.getRole_id() == null ||
                     userRequest.getMail() == null || userRequest.getMail().isEmpty() ||
