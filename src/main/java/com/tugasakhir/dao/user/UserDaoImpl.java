@@ -83,6 +83,15 @@ public class UserDaoImpl extends DBHandler implements UserDao {
     public ResponseEntity<?> updateUser(UserRequest userRequest, HttpServletRequest request) {
         log.info(log_template_enter, "updateUser", new java.util.Date(), request.getRemoteAddr(), Helpers.toJson(userRequest));
         try {
+            if (userRequest.getUser_name() == null || userRequest.getUser_name().isEmpty() ||
+                    userRequest.getUser_password() == null || userRequest.getUser_password().isEmpty() ||
+                    userRequest.getUser_active() == null ||
+                    userRequest.getRole_id() == null ||
+                    userRequest.getMail() == null || userRequest.getMail().isEmpty() ||
+                    userRequest.getFull_name() == null || userRequest.getFull_name().isEmpty() ||
+                    userRequest.getPhone() == null || userRequest.getPhone().isEmpty()) {
+                throw new RuntimeException("Mohon isi semua data!");
+            }
             JwtTokenResponse response = SessionUtil.getUserData(request);
             userRequest.setUser_password(bCryptPasswordEncoder.encode(userRequest.getUser_password()));
             Object[] obj = {
