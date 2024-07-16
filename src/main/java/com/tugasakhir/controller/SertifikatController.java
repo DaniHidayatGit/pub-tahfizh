@@ -11,14 +11,18 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
+import com.tugasakhir.util.jwt.JwtTokenResponse;
+import com.tugasakhir.util.jwt.SessionUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -31,11 +35,12 @@ public class SertifikatController {
 
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadCertificate(
-            @RequestParam String nama_mahasiswa
+            HttpServletRequest request
     ) throws IOException {
-
-        // Baca template PDF
-        ClassPathResource pdfResource = new ClassPathResource("template_2.pdf");
+        JwtTokenResponse response = SessionUtil.getUserData(request);
+        String nama_mahasiswa = response.getFull_name();
+         // Baca template PDF
+        ClassPathResource pdfResource = new ClassPathResource("template.pdf");
         PdfReader pdfReader = new PdfReader(pdfResource.getInputStream());
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
@@ -72,7 +77,11 @@ public class SertifikatController {
         // Mengatur header untuk respons
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "certificate.pdf");
+        ContentDisposition contentDisposition = ContentDisposition.attachment()
+                .filename(nama_mahasiswa + "-certificate.pdf")
+                .build();
+
+        headers.setContentDisposition(contentDisposition);
         headers.add("Access-Control-Expose-Headers", "Content-Disposition");
 
         return ResponseEntity

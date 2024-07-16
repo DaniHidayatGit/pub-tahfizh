@@ -32,7 +32,7 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(loginRequest.getUser_name(), loginRequest.getUser_password()));
             return loginDao.doLogin(loginRequest, request);
         } catch (RuntimeException e){
-            return Response.response("USER TIDAK DITEMUKAN", HttpStatus.BAD_REQUEST);
+            return Response.response("Username dan Password Salah", HttpStatus.BAD_REQUEST);
         }
     }
 

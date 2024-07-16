@@ -30,11 +30,17 @@ public class Helpers {
             throw new RuntimeException("Mohon inputkan " + combo + " dengan benar!");
     }
 
+    public static boolean isValidNumber(String text){
+        return (text == null || !text.matches("^[+\\d\\s]+$"));
+    }
+
     public static boolean isInteger(String str) {
+        System.out.println("str " + str);
         if (str == null) {
             return false;
         }
         try {
+            System.out.println(str);
             Integer.parseInt(str);
         } catch (NumberFormatException e) {
             return false;

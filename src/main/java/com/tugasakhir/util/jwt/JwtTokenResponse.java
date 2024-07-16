@@ -13,4 +13,6 @@ public class JwtTokenResponse {
     private String user_role;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String full_name;
 }

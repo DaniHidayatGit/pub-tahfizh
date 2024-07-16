@@ -42,6 +42,12 @@ public class LoginDaoImpl extends DBHandler implements LoginDao {
             jwtTokenResponse.setUser_role(getString(linkedHashMap.get("role_id")));
             jwtTokenResponse.setEmail(getString(linkedHashMap.get("mail")));
 
+            if(getString(linkedHashMap.get("role_id")).equals("3")){
+                jwtTokenResponse.setFull_name(getString(linkedHashMap.get("nama_mahasiswa")));
+            } else {
+                jwtTokenResponse.setFull_name(getString(linkedHashMap.get("full_name")));
+            }
+
             String token = jwtTokenUtil.generateToken(jwtTokenResponse);
             linkedHashMap.put("token", token);
 

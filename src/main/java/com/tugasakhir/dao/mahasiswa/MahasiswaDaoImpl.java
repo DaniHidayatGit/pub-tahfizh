@@ -64,7 +64,7 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
                 throw new RuntimeException("Mohon isi semua data!");
 
             if(!(angkatanRequest.getAngkatan() != null && angkatanRequest.getAngkatan().matches("[0-9]+")))
-                throw new RuntimeException("Angkatannya harus berupa angka!");
+                throw new RuntimeException("Angkatan harus berupa angka!");
 
             Object[] obj = {
                     angkatanRequest.getId(),
@@ -124,6 +124,10 @@ public class MahasiswaDaoImpl extends DBQueryHandler implements MahasiswaDao {
 
             if(!isValidEmail(mahasiswaRequest.getEmail()))
                 throw new RuntimeException("Mohon berikan inputan email yang valid!");
+
+            if(isValidNumber(mahasiswaRequest.getNomor_hp())){
+                throw new RuntimeException("Mohon inputkan no. Hp dengan benar!");
+            }
 
 
             String password = bCryptPasswordEncoder.encode(mahasiswaRequest.getAngkatan());
